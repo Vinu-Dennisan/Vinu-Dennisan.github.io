@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vinu Dennisan W — Portfolio</title>
+<style>
+  :root{
+    --bg:#F6F7F5;
+    --surface:#FFFFFF;
+    --ink:#1C2321;
+    --muted:#6B7570;
+    --line:#E3E6E2;
+    --accent:#3E6259;
+    --accent-soft:#DCEAE4;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Segoe UI', system-ui, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:60px 24px;
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  h1{
+    font-size:40px;
+    letter-spacing:-0.02em;
+    margin-bottom:8px;
+  }
+  .role{
+    font-size:16px;
+    color:var(--muted);
+    margin-bottom:20px;
+  }
+  .about{
+    font-size:15px;
+    color:var(--ink);
+    max-width:620px;
+    margin-bottom:24px;
+  }
+  .links{
+    display:flex;
+    gap:12px;
+    margin-bottom:50px;
+  }
+  .links a{
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    padding:10px 18px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    color:var(--ink);
+    background:var(--surface);
+  }
+  .links a.primary{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+  }
+  section{
+    margin-bottom:50px;
+  }
+  h2{
+    font-size:13px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:20px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;
+  }
+  .skills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .skill{
+    font-size:13px;
+    padding:6px 14px;
+    border-radius:20px;
+    background:var(--accent-soft);
+    color:var(--accent);
+  }
+  .project{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:24px;
+    margin-bottom:16px;
+  }
+  .project h3{
+    font-size:18px;
+    margin-bottom:6px;
+  }
+  .project p{
+    font-size:14px;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+  .project .stack{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:16px;
+  }
+  .project .stack span{
+    font-size:11px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    padding:3px 10px;
+    border-radius:20px;
+    color:var(--muted);
+  }
+  .project .actions a{
+    font-size:13px;
+    font-weight:600;
+    color:var(--accent);
+    text-decoration:none;
+    margin-right:16px;
+  }
+  footer{
+    font-size:13px;
+    color:var(--muted);
+    text-align:center;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Portfolio</div>
+  <h1>Vinu Dennisan W</h1>
+  <p class="role">B.E. Computer Science &amp; Engineering, 2026 · Aspiring Software Developer</p>
+  <p class="about">
+    Recent Computer Science graduate looking to start my career as a developer.
+    I enjoy building practical applications and am currently learning modern web
+    and AI technologies. Below is a project I built to apply what I've learned.
+  </p>
+  <div class="links">
+    <a class="primary" href="mailto:vinudennisan39@gmail.com">Email Me</a>
+    <a href="#" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/vinu-dennisan-512517406" target="_blank">LinkedIn</a>
+    <a href="#">Resume (PDF)</a>
+  </div>
+
+  <section>
+    <h2>Skills</h2>
+    <div class="skills">
+      <span class="skill">HTML / CSS / JavaScript</span>
+      <span class="skill">Python</span>
+      <span class="skill">Java</span>
+      <span class="skill">SQL</span>
+      <span class="skill">Git &amp; GitHub</span>
+      <span class="skill">Problem Solving</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    <div class="project">
+      <h3>Student Management System</h3>
+      <p>
+        A CRUD (Create, Read, Update, Delete) application to manage student records —
+        add, view, search, update, and delete students through a simple menu-driven interface.
+      </p>
+      <div class="stack">
+        <span>Python</span>
+        <span>SQLite</span>
+        <span>CRUD</span>
+      </div>
+      <div class="actions">
+        <a href="#" target="_blank">Source Code →</a>
+      </div>
+    </div>
+    <div class="project">
+      <h3>PageTurn — Online Bookstore</h3>
+      <p>
+        A responsive online bookstore where users can browse books, search and filter by
+        genre, and manage a shopping cart with live totals.
+      </p>
+      <div class="stack">
+        <span>HTML</span>
+        <span>CSS</span>
+        <span>JavaScript</span>
+      </div>
+      <div class="actions">
+        <a href="#" target="_blank">Live Demo →</a>
+        <a href="#" target="_blank">Source Code →</a>
+      </div>
+    </div>
+    <div class="project">
+      <h3>TaskFlow — Task Manager Web App</h3>
+      <p>
+        A task management app where users can add, prioritize, filter, and complete
+        daily tasks. Data is saved automatically in the browser so tasks persist
+        between visits.
+      </p>
+      <div class="stack">
+        <span>HTML</span>
+        <span>CSS</span>
+        <span>JavaScript</span>
+        <span>localStorage</span>
+      </div>
+      <div class="actions">
+        <a href="#" target="_blank">Live Demo →</a>
+        <a href="#" target="_blank">Source Code →</a>
+      </div>
+    </div>
+    <div class="project">
+      <h3>Network Analysis using Nmap</h3>
+      <p>
+        Performed network discovery and port scanning using Nmap to identify active
+        hosts, open ports, and running services — analyzing results for basic
+        network security exposure.
+      </p>
+      <div class="stack">
+        <span>Nmap</span>
+        <span>Network Security</span>
+      </div>
+      <div class="actions">
+        <a href="#" target="_blank">Project Notes →</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <p style="font-size:14px;">B.E. Computer Science &amp; Engineering — 2026</p>
+  </section>
+
+  <footer>
+    &copy; 2026 Vinu Dennisan W. Built with HTML &amp; CSS.
+  </footer>
+
+</div>
+</body>
+</html>
