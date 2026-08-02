@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PageTurn — Online Bookstore</title>
+<title>Book Store</title>
 <style>
   :root{
     --bg:#FAF7F2;
@@ -79,16 +79,34 @@
     padding:24px 20px;
     flex-wrap:wrap;
   }
-  .controls input, .controls select{
+  .controls input{
     padding:10px 14px;
     border-radius:8px;
     border:1px solid var(--line);
     font-size:13px;
     background:var(--surface);
+    width:320px;
+    max-width:80vw;
+  }
+  .controls button{
+    padding:10px 20px;
+    border-radius:8px;
+    border:none;
+    background:var(--accent);
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .status{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    padding-bottom:10px;
   }
   .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
     gap:20px;
     max-width:1100px;
     margin:0 auto;
@@ -98,46 +116,43 @@
     background:var(--surface);
     border:1px solid var(--line);
     border-radius:12px;
-    padding:18px;
+    padding:16px;
     display:flex;
     flex-direction:column;
   }
   .cover{
-    height:130px;
+    height:180px;
     border-radius:8px;
     background:var(--accent-soft);
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:34px;
+    font-size:30px;
     margin-bottom:14px;
+    overflow:hidden;
+  }
+  .cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
   }
   .card h3{
-    font-size:15px;
+    font-size:14px;
     margin-bottom:4px;
+    line-height:1.3;
   }
   .card .author{
     font-size:12px;
     color:var(--muted);
     margin-bottom:10px;
   }
-  .card .genre{
-    display:inline-block;
-    font-size:11px;
-    background:var(--accent-soft);
-    color:var(--accent);
-    padding:3px 10px;
-    border-radius:20px;
-    margin-bottom:12px;
-    width:fit-content;
-  }
   .card .price{
-    font-size:16px;
+    font-size:15px;
     font-weight:700;
     margin-bottom:12px;
+    margin-top:auto;
   }
   .card button{
-    margin-top:auto;
     background:var(--accent);
     color:#fff;
     border:none;
@@ -192,6 +207,10 @@
     font-size:13px;
     border-bottom:1px solid var(--line);
     padding-bottom:10px;
+    gap:8px;
+  }
+  .cart-item span:first-child{
+    flex:1;
   }
   .cart-item button{
     background:none;
@@ -223,25 +242,20 @@
 <body>
 
 <header>
-  <div class="logo">📚 PageTurn</div>
+  <div class="logo">📚 Book Store</div>
   <button class="cart-btn" onclick="toggleCart(true)">Cart <span class="cart-count" id="cartCount">0</span></button>
 </header>
 
 <div class="hero">
   <h1>Find your next favorite book</h1>
-  <p>Browse, search, and add books to your cart — all data is handled locally in your browser.</p>
+  <p>Search real books from across the internet, and add them to your cart.</p>
 </div>
 
 <div class="controls">
-  <input type="text" id="searchInput" placeholder="Search by title or author...">
-  <select id="genreFilter">
-    <option value="all">All Genres</option>
-    <option value="Fiction">Fiction</option>
-    <option value="Non-Fiction">Non-Fiction</option>
-    <option value="Sci-Fi">Sci-Fi</option>
-    <option value="Mystery">Mystery</option>
-  </select>
+  <input type="text" id="searchInput" placeholder="Search any book title or author...">
+  <button onclick="searchBooks()">Search</button>
 </div>
+<div class="status" id="status">Showing popular books to start</div>
 
 <div class="grid" id="bookGrid"></div>
 
@@ -257,58 +271,74 @@
 </div>
 
 <script>
-  const books = [
-    { id:1, title:"The Silent Orbit", author:"A. Rao", genre:"Sci-Fi", price:349, emoji:"🚀" },
-    { id:2, title:"Whispers in Rain", author:"M. Iyer", genre:"Fiction", price:299, emoji:"🌧️" },
-    { id:3, title:"The Last Ledger", author:"K. Nathan", genre:"Mystery", price:399, emoji:"🕵️" },
-    { id:4, title:"Atoms & Ideas", author:"S. Verma", genre:"Non-Fiction", price:449, emoji:"🧪" },
-    { id:5, title:"Coral Streets", author:"R. Menon", genre:"Fiction", price:279, emoji:"🏙️" },
-    { id:6, title:"Beyond Andromeda", author:"P. Suresh", genre:"Sci-Fi", price:399, emoji:"🌌" },
-    { id:7, title:"The Quiet Witness", author:"J. Thomas", genre:"Mystery", price:329, emoji:"🔍" },
-    { id:8, title:"Minds & Machines", author:"D. Krishnan", genre:"Non-Fiction", price:499, emoji:"🤖" },
-  ];
-
   let cart = JSON.parse(localStorage.getItem('bookstore_cart') || '[]');
-
   const grid = document.getElementById('bookGrid');
+  const statusEl = document.getElementById('status');
   const searchInput = document.getElementById('searchInput');
-  const genreFilter = document.getElementById('genreFilter');
 
-  function renderBooks(){
-    const query = searchInput.value.toLowerCase();
-    const genre = genreFilter.value;
-
-    const filtered = books.filter(b =>
-      (b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query)) &&
-      (genre === 'all' || b.genre === genre)
-    );
-
-    grid.innerHTML = filtered.map(b => `
-      <div class="card">
-        <div class="cover">${b.emoji}</div>
-        <h3>${b.title}</h3>
-        <div class="author">by ${b.author}</div>
-        <div class="genre">${b.genre}</div>
-        <div class="price">₹${b.price}</div>
-        <button onclick="addToCart(${b.id})">Add to Cart</button>
-      </div>
-    `).join('') || `<p style="color:var(--muted); grid-column:1/-1; text-align:center;">No books match your search.</p>`;
+  function priceFor(key){
+    let hash = 0;
+    for(let i=0;i<key.length;i++){ hash = (hash * 31 + key.charCodeAt(i)) % 1000; }
+    return 199 + (hash % 400);
   }
 
-  function addToCart(id){
-    const existing = cart.find(c => c.id === id);
-    if(existing){ existing.qty += 1; }
-    else{
-      const book = books.find(b => b.id === id);
-      cart.push({ ...book, qty: 1 });
+  async function fetchBooks(query){
+    statusEl.textContent = 'Searching...';
+    grid.innerHTML = '';
+    try{
+      const res = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=24`);
+      const data = await res.json();
+      renderBooks(data.docs || []);
+      statusEl.textContent = data.docs && data.docs.length
+        ? `Showing results for "${query}"`
+        : `No books found for "${query}"`;
+    }catch(err){
+      statusEl.textContent = 'Could not load books right now — check your internet connection and try again.';
     }
+  }
+
+  function renderBooks(docs){
+    grid.innerHTML = '';
+    if(!docs.length){
+      grid.innerHTML = `<p style="color:var(--muted); grid-column:1/-1; text-align:center;">No books to show.</p>`;
+      return;
+    }
+
+    docs.forEach(book => {
+      const title = book.title || 'Untitled';
+      const author = (book.author_name && book.author_name[0]) || 'Unknown Author';
+      const key = book.key || title;
+      const price = priceFor(key);
+      const coverId = book.cover_i;
+      const coverUrl = coverId
+        ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
+        : null;
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="cover">${coverUrl ? `<img src="${coverUrl}" alt="${title}">` : '📖'}</div>
+        <h3>${title}</h3>
+        <div class="author">by ${author}</div>
+        <div class="price">₹${price}</div>
+        <button>Add to Cart</button>
+      `;
+      card.querySelector('button').addEventListener('click', () => addToCart({ key, title, author, price }));
+      grid.appendChild(card);
+    });
+  }
+
+  function addToCart(book){
+    const existing = cart.find(c => c.key === book.key);
+    if(existing){ existing.qty += 1; }
+    else{ cart.push({ ...book, qty: 1 }); }
     saveCart();
     renderCart();
     toggleCart(true);
   }
 
-  function removeFromCart(id){
-    cart = cart.filter(c => c.id !== id);
+  function removeFromCart(key){
+    cart = cart.filter(c => c.key !== key);
     saveCart();
     renderCart();
   }
@@ -328,9 +358,12 @@
       cartItems.innerHTML = cart.map(c => `
         <div class="cart-item">
           <span>${c.title} × ${c.qty}</span>
-          <span>₹${c.price * c.qty} <button onclick="removeFromCart(${c.id})">Remove</button></span>
+          <span>₹${c.price * c.qty} <button data-key="${c.key}">Remove</button></span>
         </div>
       `).join('');
+      cartItems.querySelectorAll('button[data-key]').forEach(btn => {
+        btn.addEventListener('click', () => removeFromCart(btn.dataset.key));
+      });
     }
 
     const totalCount = cart.reduce((sum, c) => sum + c.qty, 0);
@@ -344,10 +377,16 @@
     document.getElementById('overlay').classList.toggle('open', open);
   }
 
-  searchInput.addEventListener('input', renderBooks);
-  genreFilter.addEventListener('change', renderBooks);
+  function searchBooks(){
+    const query = searchInput.value.trim();
+    if(query) fetchBooks(query);
+  }
 
-  renderBooks();
+  searchInput.addEventListener('keydown', e => {
+    if(e.key === 'Enter') searchBooks();
+  });
+
+  fetchBooks('bestseller fiction');
   renderCart();
 </script>
 </body>
