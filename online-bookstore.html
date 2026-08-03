@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Engineering Books &amp; Previous Year Papers</title>
+<title>Book Store</title>
 <style>
   :root{
     --bg:#FAF7F2;
@@ -27,38 +27,89 @@
     display:flex;
     justify-content:space-between;
     align-items:center;
+    position:sticky;
+    top:0;
+    z-index:10;
   }
   .logo{
     font-size:20px;
     font-weight:800;
     color:var(--accent);
   }
-  header a{
-    font-size:13px;
-    color:var(--accent);
-    text-decoration:none;
+  .cart-btn{
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    font-size:14px;
     font-weight:600;
+    cursor:pointer;
+    position:relative;
+  }
+  .cart-count{
+    background:#fff;
+    color:var(--accent);
+    border-radius:50%;
+    font-size:11px;
+    width:18px;
+    height:18px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    margin-left:6px;
+    font-weight:800;
+  }
+  .tabs{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    padding:20px 20px 0;
+  }
+  .tab-btn{
+    padding:10px 22px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    background:var(--surface);
+    color:var(--muted);
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .tab-btn.active{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
   }
   .hero{
     text-align:center;
-    padding:44px 20px 20px;
+    padding:24px 20px 10px;
   }
   .hero h1{
-    font-size:30px;
+    font-size:28px;
     margin-bottom:8px;
   }
   .hero p{
     color:var(--muted);
     font-size:14px;
-    max-width:600px;
+    max-width:560px;
     margin:0 auto;
   }
   .controls{
     display:flex;
-    gap:12px;
+    gap:10px;
     justify-content:center;
     padding:24px 20px;
     flex-wrap:wrap;
+  }
+  .controls input{
+    padding:10px 14px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    font-size:13px;
+    background:var(--surface);
+    width:320px;
+    max-width:80vw;
   }
   .controls select{
     padding:10px 16px;
@@ -68,6 +119,159 @@
     font-size:14px;
     color:var(--ink);
   }
+  .controls button{
+    padding:10px 20px;
+    border-radius:8px;
+    border:none;
+    background:var(--accent);
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .status{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    padding-bottom:10px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+    gap:20px;
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 32px 60px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+  }
+  .cover{
+    height:180px;
+    border-radius:8px;
+    background:var(--accent-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    margin-bottom:14px;
+    overflow:hidden;
+  }
+  .cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .card h3{
+    font-size:14px;
+    margin-bottom:4px;
+    line-height:1.3;
+  }
+  .card .author{
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+  .card .price{
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:12px;
+    margin-top:auto;
+  }
+  .card button{
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    padding:9px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .card button:hover{opacity:.9;}
+
+  .drawer{
+    position:fixed;
+    top:0;
+    right:-360px;
+    width:340px;
+    height:100%;
+    background:var(--surface);
+    box-shadow:-4px 0 20px rgba(0,0,0,.08);
+    transition:right .25s ease;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    z-index:20;
+  }
+  .drawer.open{ right:0; }
+  .drawer h2{
+    font-size:18px;
+    margin-bottom:18px;
+  }
+  .drawer .close{
+    position:absolute;
+    top:20px;
+    right:20px;
+    background:none;
+    border:none;
+    font-size:18px;
+    cursor:pointer;
+    color:var(--muted);
+  }
+  .cart-items{
+    flex:1;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .cart-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:13px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;
+    gap:8px;
+  }
+  .cart-item span:first-child{
+    flex:1;
+  }
+  .cart-item button{
+    background:none;
+    border:none;
+    color:var(--accent);
+    cursor:pointer;
+    font-size:12px;
+  }
+  .cart-total{
+    border-top:1px solid var(--line);
+    padding-top:14px;
+    margin-top:14px;
+    display:flex;
+    justify-content:space-between;
+    font-weight:700;
+    font-size:15px;
+  }
+  .overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.3);
+    z-index:15;
+  }
+  .overlay.open{ display:block; }
+  .empty-cart{ color:var(--muted); font-size:13px; text-align:center; margin-top:20px;}
+
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+
   .subjects{
     max-width:900px;
     margin:0 auto;
@@ -129,11 +333,6 @@
     font-size:13px;
     color:var(--ink);
   }
-  .empty{
-    text-align:center;
-    color:var(--muted);
-    padding:20px;
-  }
   .lookup{
     max-width:900px;
     margin:0 auto 60px;
@@ -180,70 +379,218 @@
 <body>
 
 <header>
-  <div class="logo">📘 Engineering Study Materials</div>
-  <a href="online-bookstore.html">← Back to Book Store</a>
+  <div class="logo">📚 Book Store</div>
+  <button class="cart-btn" onclick="toggleCart(true)">Cart <span class="cart-count" id="cartCount">0</span></button>
 </header>
 
-<div class="hero">
-  <h1>Books &amp; Previous Year Papers — All Departments</h1>
-  <p>Select your department, regulation, and semester. For CSE under R2021/R2017 you'll see the detailed subject list below. For every other combination, use the direct search links to pull the official, up-to-date syllabus and papers.</p>
+<div class="tabs">
+  <button class="tab-btn active" id="tabGeneral" onclick="switchTab('general')">All Books</button>
+  <button class="tab-btn" id="tabEngineering" onclick="switchTab('engineering')">Engineering Books &amp; Papers</button>
 </div>
 
-<div class="controls">
-  <select id="deptSelect">
-    <option value="CSE">Computer Science &amp; Engineering (CSE)</option>
-    <option value="IT">Information Technology (IT)</option>
-    <option value="ECE">Electronics &amp; Communication (ECE)</option>
-    <option value="EEE">Electrical &amp; Electronics (EEE)</option>
-    <option value="MECH">Mechanical Engineering (MECH)</option>
-    <option value="CIVIL">Civil Engineering (CIVIL)</option>
-    <option value="EIE">Electronics &amp; Instrumentation (EIE)</option>
-    <option value="AI&DS">Artificial Intelligence &amp; Data Science (AI&amp;DS)</option>
-    <option value="AGRI">Agricultural Engineering</option>
-    <option value="BME">Biomedical Engineering</option>
-    <option value="CHEM">Chemical Engineering</option>
-    <option value="AUTO">Automobile Engineering</option>
-  </select>
-  <select id="regulationSelect">
-    <option value="R2025">Regulation 2025</option>
-    <option value="R2021">Regulation 2021</option>
-    <option value="R2017">Regulation 2017</option>
-  </select>
-  <select id="semesterSelect">
-    <option value="1">Semester 1</option>
-    <option value="2">Semester 2</option>
-    <option value="3">Semester 3</option>
-    <option value="4">Semester 4</option>
-    <option value="5">Semester 5</option>
-    <option value="6">Semester 6</option>
-    <option value="7">Semester 7</option>
-    <option value="8">Semester 8</option>
-  </select>
+<!-- GENERAL BOOKS PANEL -->
+<div class="panel active" id="panelGeneral">
+  <div class="hero">
+    <h1>Find your next favorite book</h1>
+    <p>Search real books from across the internet, and add them to your cart.</p>
+  </div>
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search any book title or author...">
+    <button onclick="searchBooks()">Search</button>
+  </div>
+  <div class="status" id="status">Showing popular books to start</div>
+  <div class="grid" id="bookGrid"></div>
 </div>
 
-<div class="note" id="statusNote">
-  📌 Anna University Regulation 2025 applies to students admitted from the 2025 batch onwards. It covers all
-  departments and continues the credit-based system with an updated course structure. Always verify exact subject
-  lists against your own college's current syllabus copy, since minor variations exist between affiliated colleges.
+<!-- ENGINEERING BOOKS PANEL -->
+<div class="panel" id="panelEngineering">
+  <div class="hero">
+    <h1>Books &amp; Previous Year Papers — All Departments</h1>
+    <p>Select your department, regulation, and semester below.</p>
+  </div>
+  <div class="controls">
+    <select id="deptSelect">
+      <option value="CSE">Computer Science &amp; Engineering (CSE)</option>
+      <option value="IT">Information Technology (IT)</option>
+      <option value="ECE">Electronics &amp; Communication (ECE)</option>
+      <option value="EEE">Electrical &amp; Electronics (EEE)</option>
+      <option value="MECH">Mechanical Engineering (MECH)</option>
+      <option value="CIVIL">Civil Engineering (CIVIL)</option>
+      <option value="EIE">Electronics &amp; Instrumentation (EIE)</option>
+      <option value="AI&DS">Artificial Intelligence &amp; Data Science (AI&amp;DS)</option>
+      <option value="AGRI">Agricultural Engineering</option>
+      <option value="BME">Biomedical Engineering</option>
+      <option value="CHEM">Chemical Engineering</option>
+      <option value="AUTO">Automobile Engineering</option>
+    </select>
+    <select id="regulationSelect">
+      <option value="R2025">Regulation 2025</option>
+      <option value="R2021">Regulation 2021</option>
+      <option value="R2017">Regulation 2017</option>
+    </select>
+    <select id="semesterSelect">
+      <option value="1">Semester 1</option>
+      <option value="2">Semester 2</option>
+      <option value="3">Semester 3</option>
+      <option value="4">Semester 4</option>
+      <option value="5">Semester 5</option>
+      <option value="6">Semester 6</option>
+      <option value="7">Semester 7</option>
+      <option value="8">Semester 8</option>
+    </select>
+  </div>
+  <div class="note">
+    📌 Regulation 2025 applies to students admitted from the 2025 batch onwards, across all departments. Always
+    verify the exact subject list against your own college's current syllabus copy, since minor variations exist
+    between affiliated colleges.
+  </div>
+  <div class="subjects" id="subjectList"></div>
+  <div class="lookup" id="lookupBox" style="display:none;">
+    <h2 id="lookupTitle"></h2>
+    <p>We don't have a verified detailed subject list for this exact combination yet, so here are direct links to
+       find the official, current information instead of a possibly outdated hardcoded list.</p>
+    <div class="buttons">
+      <a id="syllabusLink">Find Official Syllabus →</a>
+      <a id="papersLink" class="secondary">Find Previous Year Papers →</a>
+    </div>
+  </div>
 </div>
 
-<div class="subjects" id="subjectList"></div>
-
-<div class="lookup" id="lookupBox" style="display:none;">
-  <h2 id="lookupTitle"></h2>
-  <p>We don't have a verified detailed subject list for this exact combination yet, so here are direct links to
-     find the official, current information instead of a possibly outdated hardcoded list.</p>
-  <div class="buttons">
-    <a id="syllabusLink" target="_blank">Find Official Syllabus →</a>
-    <a id="papersLink" class="secondary" target="_blank">Find Previous Year Papers →</a>
+<div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
+<div class="drawer" id="cartDrawer">
+  <button class="close" onclick="toggleCart(false)">✕</button>
+  <h2>Your Cart</h2>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-total">
+    <span>Total</span>
+    <span id="cartTotal">₹0</span>
   </div>
 </div>
 
 <script>
-  // Verified sample data — only for CSE, R2021 and R2017, cross-checked subject codes.
-  // For all other department/regulation combinations, we use live search links instead
-  // of guessing at subject lists we can't verify.
-  const data = {
+  // ---------- TAB SWITCHING ----------
+  function switchTab(tab){
+    document.getElementById('panelGeneral').classList.toggle('active', tab === 'general');
+    document.getElementById('panelEngineering').classList.toggle('active', tab === 'engineering');
+    document.getElementById('tabGeneral').classList.toggle('active', tab === 'general');
+    document.getElementById('tabEngineering').classList.toggle('active', tab === 'engineering');
+  }
+
+  // ---------- GENERAL BOOK SEARCH ----------
+  let cart = JSON.parse(localStorage.getItem('bookstore_cart') || '[]');
+  const grid = document.getElementById('bookGrid');
+  const statusEl = document.getElementById('status');
+  const searchInput = document.getElementById('searchInput');
+
+  function priceFor(key){
+    let hash = 0;
+    for(let i=0;i<key.length;i++){ hash = (hash * 31 + key.charCodeAt(i)) % 1000; }
+    return 199 + (hash % 400);
+  }
+
+  async function fetchBooks(query){
+    statusEl.textContent = 'Searching...';
+    grid.innerHTML = '';
+    try{
+      const res = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=24`);
+      const data = await res.json();
+      renderBooks(data.docs || []);
+      statusEl.textContent = data.docs && data.docs.length
+        ? `Showing results for "${query}"`
+        : `No books found for "${query}"`;
+    }catch(err){
+      statusEl.textContent = 'Could not load books right now — check your internet connection and try again.';
+    }
+  }
+
+  function renderBooks(docs){
+    grid.innerHTML = '';
+    if(!docs.length){
+      grid.innerHTML = `<p style="color:var(--muted); grid-column:1/-1; text-align:center;">No books to show.</p>`;
+      return;
+    }
+    docs.forEach(book => {
+      const title = book.title || 'Untitled';
+      const author = (book.author_name && book.author_name[0]) || 'Unknown Author';
+      const key = book.key || title;
+      const price = priceFor(key);
+      const coverId = book.cover_i;
+      const coverUrl = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null;
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="cover">${coverUrl ? `<img src="${coverUrl}" alt="${title}">` : '📖'}</div>
+        <h3>${title}</h3>
+        <div class="author">by ${author}</div>
+        <div class="price">₹${price}</div>
+        <button>Add to Cart</button>
+      `;
+      card.querySelector('button').addEventListener('click', () => addToCart({ key, title, author, price }));
+      grid.appendChild(card);
+    });
+  }
+
+  function addToCart(book){
+    const existing = cart.find(c => c.key === book.key);
+    if(existing){ existing.qty += 1; }
+    else{ cart.push({ ...book, qty: 1 }); }
+    saveCart();
+    renderCart();
+    toggleCart(true);
+  }
+
+  function removeFromCart(key){
+    cart = cart.filter(c => c.key !== key);
+    saveCart();
+    renderCart();
+  }
+
+  function saveCart(){
+    localStorage.setItem('bookstore_cart', JSON.stringify(cart));
+  }
+
+  function renderCart(){
+    const cartItems = document.getElementById('cartItems');
+    const cartCount = document.getElementById('cartCount');
+    const cartTotal = document.getElementById('cartTotal');
+
+    if(cart.length === 0){
+      cartItems.innerHTML = `<div class="empty-cart">Your cart is empty.</div>`;
+    } else {
+      cartItems.innerHTML = cart.map(c => `
+        <div class="cart-item">
+          <span>${c.title} × ${c.qty}</span>
+          <span>₹${c.price * c.qty} <button data-key="${c.key}">Remove</button></span>
+        </div>
+      `).join('');
+      cartItems.querySelectorAll('button[data-key]').forEach(btn => {
+        btn.addEventListener('click', () => removeFromCart(btn.dataset.key));
+      });
+    }
+
+    const totalCount = cart.reduce((sum, c) => sum + c.qty, 0);
+    const totalPrice = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
+    cartCount.textContent = totalCount;
+    cartTotal.textContent = `₹${totalPrice}`;
+  }
+
+  function toggleCart(open){
+    document.getElementById('cartDrawer').classList.toggle('open', open);
+    document.getElementById('overlay').classList.toggle('open', open);
+  }
+
+  function searchBooks(){
+    const query = searchInput.value.trim();
+    if(query) fetchBooks(query);
+  }
+
+  searchInput.addEventListener('keydown', e => {
+    if(e.key === 'Enter') searchBooks();
+  });
+
+  // ---------- ENGINEERING BOOKS & PAPERS ----------
+  const engData = {
     R2021: {
       CSE: {
         1: [
@@ -360,13 +707,13 @@
   const syllabusLink = document.getElementById('syllabusLink');
   const papersLink = document.getElementById('papersLink');
 
-  function render(){
+  function renderEngineering(){
     const dept = deptSelect.value;
     const regulation = regulationSelect.value;
     const semester = semesterSelect.value;
     const deptName = deptNames[dept] || dept;
 
-    const subjects = (data[regulation] && data[regulation][dept] && data[regulation][dept][semester]) || [];
+    const subjects = (engData[regulation] && engData[regulation][dept] && engData[regulation][dept][semester]) || [];
 
     if(subjects.length){
       lookupBox.style.display = 'none';
@@ -381,8 +728,8 @@
               <div class="book">📖 ${sub.book}</div>
             </div>
             <div class="subject-actions">
-              <a href="https://www.google.com/search?q=${query}" target="_blank">Find Question Papers →</a>
-              <a class="primary" href="https://www.google.com/search?q=${bookQuery}" target="_blank">Find Textbook →</a>
+              <a href="https://www.google.com/search?q=${query}">Find Question Papers →</a>
+              <a class="primary" href="https://www.google.com/search?q=${bookQuery}">Find Textbook →</a>
             </div>
           </div>
         `;
@@ -398,11 +745,14 @@
     }
   }
 
-  deptSelect.addEventListener('change', render);
-  regulationSelect.addEventListener('change', render);
-  semesterSelect.addEventListener('change', render);
+  deptSelect.addEventListener('change', renderEngineering);
+  regulationSelect.addEventListener('change', renderEngineering);
+  semesterSelect.addEventListener('change', renderEngineering);
 
-  render();
+  // ---------- INITIAL LOAD ----------
+  fetchBooks('bestseller fiction');
+  renderCart();
+  renderEngineering();
 </script>
 </body>
 </html>
