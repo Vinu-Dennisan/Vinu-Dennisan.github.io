@@ -1,21 +1,3 @@
-"""
-Student Management System
---------------------------
-A simple CRUD (Create, Read, Update, Delete) application to manage
-student records, built with Python and SQLite.
-
-Note: This uses SQLite instead of MySQL so it runs instantly with
-zero setup (SQLite is built into Python - no server installation
-needed). The database logic (SQL queries, CRUD structure) is the
-same style you'd use with MySQL - only the connection line would
-change if you later connect to a real MySQL server.
-
-How to run:
-    python student_management.py
-
-Everything is stored in a local file called students.db,
-created automatically the first time you run this.
-"""
 
 import sqlite3
 
