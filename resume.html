@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vinu Dennisan W — Resume</title>
+<style>
+  :root{
+    --bg:#F6F7F5;
+    --surface:#FFFFFF;
+    --ink:#1C2321;
+    --muted:#6B7570;
+    --line:#E3E6E2;
+    --accent:#3E6259;
+    --accent-soft:#DCEAE4;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Segoe UI', system-ui, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  header{
+    background:var(--surface);
+    border-bottom:1px solid var(--line);
+    padding:16px 32px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .title{
+    font-size:16px;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  a.back{
+    font-size:13px;
+    color:var(--accent);
+    text-decoration:none;
+    font-weight:600;
+  }
+  a.download-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--accent);
+    color:#fff;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+    padding:10px 18px;
+    border-radius:8px;
+  }
+  a.download-btn svg{
+    width:16px;
+    height:16px;
+  }
+  .viewer-wrap{
+    max-width:900px;
+    margin:24px auto;
+    padding:0 20px;
+  }
+  .viewer{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 20px rgba(0,0,0,0.05);
+  }
+  .viewer iframe{
+    width:100%;
+    height:80vh;
+    border:none;
+    display:block;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title">📄 Vinu Dennisan W — Resume</div>
+  <div class="actions">
+    <a class="back" href="index.html">← Back to Portfolio</a>
+    <a class="download-btn" href="Vinu_Dennisan_Resume.pdf" download>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      Download Resume
+    </a>
+  </div>
+</header>
+
+<div class="viewer-wrap">
+  <div class="viewer">
+    <iframe src="Vinu_Dennisan_Resume.pdf" title="Vinu Dennisan Resume"></iframe>
+  </div>
+</div>
+
+</body>
+</html>
