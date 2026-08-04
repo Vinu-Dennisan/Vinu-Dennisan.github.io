@@ -3,383 +3,276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Knowledge Graph Assistant — GraphRAG Demo</title>
+<title>Vinu Dennisan W — Portfolio</title>
 <style>
   :root{
-    --bg:#F5F6FA;
+    --bg:#F6F7F5;
     --surface:#FFFFFF;
-    --ink:#1A1D29;
-    --muted:#6B7086;
-    --line:#E4E6EF;
-    --accent:#5B4FE8;
-    --accent-soft:#EDEBFD;
-    --node:#5B4FE8;
-    --edge:#C6C2F5;
+    --ink:#1C2321;
+    --muted:#6B7570;
+    --line:#E3E6E2;
+    --accent:#3E6259;
+    --accent-soft:#DCEAE4;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   body{
     font-family:'Segoe UI', system-ui, sans-serif;
     background:var(--bg);
     color:var(--ink);
+    line-height:1.6;
   }
-  header{
-    background:var(--surface);
-    border-bottom:1px solid var(--line);
-    padding:18px 32px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+  .wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:60px 24px;
   }
-  .logo{
-    font-size:18px;
-    font-weight:800;
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
     color:var(--accent);
+    font-weight:700;
+    margin-bottom:10px;
   }
-  header a{
-    font-size:13px;
-    color:var(--accent);
-    text-decoration:none;
-    font-weight:600;
-  }
-  .hero{
-    text-align:center;
-    padding:36px 20px 10px;
-  }
-  .hero h1{
-    font-size:26px;
+  h1{
+    font-size:40px;
+    letter-spacing:-0.02em;
     margin-bottom:8px;
   }
-  .hero p{
+  .role{
+    font-size:16px;
     color:var(--muted);
-    font-size:14px;
-    max-width:600px;
-    margin:0 auto;
+    margin-bottom:20px;
   }
-  .stack-badges{
-    display:flex;
-    justify-content:center;
-    gap:8px;
-    flex-wrap:wrap;
-    padding:16px 20px;
-  }
-  .stack-badges span{
-    font-size:12px;
-    background:var(--accent-soft);
-    color:var(--accent);
-    padding:5px 12px;
-    border-radius:20px;
-    font-weight:600;
-  }
-  .layout{
-    max-width:1000px;
-    margin:0 auto;
-    padding:20px;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-  }
-  @media (max-width: 800px){
-    .layout{ grid-template-columns:1fr; }
-  }
-  .panel{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:20px;
-  }
-  .panel h2{
-    font-size:14px;
-    margin-bottom:14px;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:.05em;
-  }
-  .graph-box{
-    background:var(--bg);
-    border-radius:10px;
-    padding:10px;
-    min-height:260px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .chat-box{
-    display:flex;
-    flex-direction:column;
-    height:400px;
-  }
-  .messages{
-    flex:1;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    padding-bottom:12px;
-  }
-  .msg{
-    max-width:85%;
-    padding:10px 14px;
-    border-radius:12px;
-    font-size:13px;
-    line-height:1.5;
-  }
-  .msg.user{
-    align-self:flex-end;
-    background:var(--accent);
-    color:#fff;
-    border-bottom-right-radius:4px;
-  }
-  .msg.bot{
-    align-self:flex-start;
-    background:var(--accent-soft);
+  .about{
+    font-size:15px;
     color:var(--ink);
-    border-bottom-left-radius:4px;
+    max-width:620px;
+    margin-bottom:24px;
   }
-  .msg.bot .source{
-    display:block;
-    margin-top:8px;
-    font-size:11px;
-    color:var(--muted);
-    font-style:italic;
-  }
-  .chat-input{
+  .links{
     display:flex;
-    gap:8px;
-    margin-top:10px;
+    gap:12px;
+    margin-bottom:50px;
+    flex-wrap:wrap;
   }
-  .chat-input input{
-    flex:1;
-    padding:10px 14px;
-    border-radius:8px;
-    border:1px solid var(--line);
+  .links a{
+    text-decoration:none;
     font-size:13px;
-  }
-  .chat-input button{
+    font-weight:600;
     padding:10px 18px;
     border-radius:8px;
-    border:none;
+    border:1px solid var(--line);
+    color:var(--ink);
+    background:var(--surface);
+  }
+  .links a.primary{
     background:var(--accent);
     color:#fff;
-    font-weight:600;
-    font-size:13px;
-    cursor:pointer;
+    border-color:var(--accent);
   }
-  .sample-qs{
+  section{
+    margin-bottom:50px;
+  }
+  h2{
+    font-size:13px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:20px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;
+  }
+  .skills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .skill{
+    font-size:13px;
+    padding:6px 14px;
+    border-radius:20px;
+    background:var(--accent-soft);
+    color:var(--accent);
+  }
+  .project{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:24px;
+    margin-bottom:16px;
+  }
+  .project h3{
+    font-size:18px;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .project p{
+    font-size:14px;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+  .project .stack{
     display:flex;
     flex-wrap:wrap;
     gap:6px;
-    margin-top:10px;
+    margin-bottom:16px;
   }
-  .sample-qs button{
+  .project .stack span{
     font-size:11px;
     background:var(--bg);
     border:1px solid var(--line);
-    padding:6px 10px;
-    border-radius:16px;
-    cursor:pointer;
+    padding:3px 10px;
+    border-radius:20px;
     color:var(--muted);
   }
-  .architecture{
-    max-width:1000px;
-    margin:20px auto 50px;
-    padding:0 20px;
-  }
-  .architecture .panel{
-    padding:24px;
-  }
-  .arch-flow{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:16px;
-  }
-  .arch-step{
-    background:var(--bg);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:12px 16px;
-    font-size:12px;
-    text-align:center;
-    flex:1;
-    min-width:120px;
-  }
-  .arch-step b{
-    display:block;
-    color:var(--accent);
+  .project .actions a{
     font-size:13px;
-    margin-bottom:4px;
+    font-weight:600;
+    color:var(--accent);
+    text-decoration:none;
+    margin-right:16px;
   }
-  .arrow{
+  footer{
+    font-size:13px;
     color:var(--muted);
-    font-size:18px;
+    text-align:center;
+    padding-top:20px;
+    border-top:1px solid var(--line);
   }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<header>
-  <div class="logo">🧠 Knowledge Graph Assistant</div>
-  <a href="index.html">← Back to Portfolio</a>
-</header>
-
-<div class="hero">
-  <h1>GraphRAG Demo — Chat with a Knowledge Graph</h1>
-  <p>Ask questions about a small company knowledge graph and get answers grounded in real relationships between people, teams, and projects.</p>
-</div>
-
-<div class="stack-badges">
-  <span>Neo4j (Graph DB)</span>
-  <span>LlamaIndex</span>
-  <span>OpenAI</span>
-  <span>MongoDB</span>
-  <span>React-style UI</span>
-</div>
-
-<div class="layout">
-  <div class="panel">
-    <h2>Knowledge Graph</h2>
-    <div class="graph-box">
-      <svg viewBox="0 0 320 220" width="100%" height="240">
-        <line x1="160" y1="40" x2="80" y2="110" stroke="#C6C2F5" stroke-width="2"/>
-        <line x1="160" y1="40" x2="240" y2="110" stroke="#C6C2F5" stroke-width="2"/>
-        <line x1="80" y1="110" x2="80" y2="180" stroke="#C6C2F5" stroke-width="2"/>
-        <line x1="240" y1="110" x2="240" y2="180" stroke="#C6C2F5" stroke-width="2"/>
-        <line x1="80" y1="110" x2="240" y2="110" stroke="#C6C2F5" stroke-width="2"/>
-
-        <circle cx="160" cy="40" r="26" fill="#5B4FE8"/>
-        <text x="160" y="45" text-anchor="middle" fill="#fff" font-size="10" font-family="sans-serif">Company</text>
-
-        <circle cx="80" cy="110" r="24" fill="#7C72EE"/>
-        <text x="80" y="115" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">Team: AI</text>
-
-        <circle cx="240" cy="110" r="24" fill="#7C72EE"/>
-        <text x="240" y="115" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">Team: Web</text>
-
-        <circle cx="80" cy="180" r="22" fill="#A79EF5"/>
-        <text x="80" y="185" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">Vinu (Lead)</text>
-
-        <circle cx="240" cy="180" r="22" fill="#A79EF5"/>
-        <text x="240" y="185" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">Rahul (Lead)</text>
-      </svg>
-    </div>
-    <p style="font-size:12px; color:var(--muted); margin-top:10px;">
-      In production, this graph lives in <b>Neo4j</b> — nodes are entities (people, teams, projects) and edges are their relationships.
-    </p>
+  <div class="eyebrow">Portfolio</div>
+  <h1>Vinu Dennisan W</h1>
+  <p class="role">B.E. Computer Science &amp; Engineering, 2026 · Aspiring Software Developer</p>
+  <p class="about">
+    Recent Computer Science graduate looking to start my career as a developer.
+    I enjoy building practical applications and am currently learning modern web
+    and AI technologies. Below is a project I built to apply what I've learned.
+  </p>
+  <div class="links">
+    <a class="primary" href="mailto:vinudennisan39@gmail.com">Email Me</a>
+    <a href="https://github.com/Vinu-Dennisan" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/vinu-dennisan-512517406" target="_blank">LinkedIn</a>
+    <a href="#">Resume (PDF)</a>
+    <a href="Vinu_Dennisan_Resume.pdf" download>Download Resume</a>
   </div>
 
-  <div class="panel chat-box">
-    <h2>Ask the Assistant</h2>
-    <div class="messages" id="messages">
-      <div class="msg bot">Hi! Ask me about the company's teams, people, or projects — try one of the sample questions below.</div>
+  <section>
+    <h2>Skills</h2>
+    <div class="skills">
+      <span class="skill">HTML / CSS / JavaScript</span>
+      <span class="skill">Python</span>
+      <span class="skill">Java</span>
+      <span class="skill">SQL</span>
+      <span class="skill">Git &amp; GitHub</span>
+      <span class="skill">Problem Solving</span>
     </div>
-    <div class="chat-input">
-      <input type="text" id="chatInput" placeholder="e.g. Who leads the AI team?">
-      <button onclick="sendMessage()">Ask</button>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    <div class="project">
+      <h3>🧠 Knowledge Graph Assistant (GraphRAG)</h3>
+      <p>
+        An interactive demo of a GraphRAG-style AI assistant that answers questions using a knowledge
+        graph — showing how graph databases and LLMs work together to give grounded, explainable answers.
+      </p>
+      <div class="stack">
+        <span>Neo4j (concept)</span>
+        <span>LlamaIndex (concept)</span>
+        <span>OpenAI (concept)</span>
+        <span>MongoDB (concept)</span>
+        <span>JavaScript</span>
+      </div>
+      <div class="actions">
+        <a href="knowledge-graph-assistant.html" target="_blank">Live Demo →</a>
+        <a href="knowledge-graph-assistant.html" target="_blank">Source Code →</a>
+      </div>
     </div>
-    <div class="sample-qs">
-      <button onclick="ask('Who leads the AI team?')">Who leads the AI team?</button>
-      <button onclick="ask('What projects does the Web team work on?')">Web team projects?</button>
-      <button onclick="ask('Who does Vinu work with?')">Who does Vinu work with?</button>
+    <div class="project">
+      <h3>🎓 Student Management System</h3>
+      <p>
+        A CRUD (Create, Read, Update, Delete) application to manage student records —
+        add, view, search, update, and delete students through a simple menu-driven interface.
+      </p>
+      <div class="stack">
+        <span>Python</span>
+        <span>SQLite</span>
+        <span>CRUD</span>
+      </div>
+      <div class="actions">
+        <a href="https://student-management-system--vinudennisan.replit.app/" target="_blank">Live Demo →</a>
+        <a href="student_management.py" target="_blank">Source Code →</a>
+      </div>
     </div>
-  </div>
+    <div class="project">
+      <h3>📚 Online Engineering Book Store</h3>
+      <p>
+        A responsive online bookstore that searches real books from across the internet, plus a
+        dedicated section for engineering students — browse textbooks and find previous year
+        question papers by department, regulation, and semester.
+      </p>
+      <div class="stack">
+        <span>HTML</span>
+        <span>CSS</span>
+        <span>JavaScript</span>
+      </div>
+      <div class="actions">
+        <a href="online-bookstore.html" target="_blank">Live Demo →</a>
+        <a href="online-bookstore.html" target="_blank">Source Code →</a>
+      </div>
+    </div>
+    <div class="project">
+      <h3>✅ TaskFlow – Personal Task Manager</h3>
+      <p>
+        A task management app where users can add, prioritize, filter, and complete
+        daily tasks. Data is saved automatically in the browser so tasks persist
+        between visits.
+      </p>
+      <div class="stack">
+        <span>HTML</span>
+        <span>CSS</span>
+        <span>JavaScript</span>
+        <span>localStorage</span>
+      </div>
+      <div class="actions">
+        <a href="taskflow-project.html" target="_blank">Live Demo →</a>
+        <a href="taskflow-project.html" target="_blank">Source Code →</a>
+      </div>
+    </div>
+    <div class="project">
+      <h3>🔒 Network Analysis using Nmap</h3>
+      <p>
+        Performed network discovery and port scanning using Nmap to identify active
+        hosts, open ports, and running services — analyzing results for basic
+        network security exposure.
+      </p>
+      <div class="stack">
+        <span>Nmap</span>
+        <span>Network Security</span>
+      </div>
+      <div class="actions">
+        <a href="nmap-simulator.html" target="_blank">Live Demo →</a>
+        <a href="nmap-network-analysis-notes.md" target="_blank">Project Notes →</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <p style="font-size:14px;">B.E. Computer Science &amp; Engineering — 2026</p>
+  </section>
+
+  <footer>
+    &copy; 2026 Vinu Dennisan W. Built with HTML &amp; CSS.
+  </footer>
+
 </div>
-
-<div class="architecture">
-  <div class="panel">
-    <h2>How this works in production (real architecture)</h2>
-    <div class="arch-flow">
-      <div class="arch-step"><b>Neo4j</b>Stores entities &amp; relationships as a graph</div>
-      <div class="arrow">→</div>
-      <div class="arch-step"><b>LlamaIndex</b>Converts your question into a graph query</div>
-      <div class="arrow">→</div>
-      <div class="arch-step"><b>OpenAI</b>Turns graph results into a natural answer</div>
-      <div class="arrow">→</div>
-      <div class="arch-step"><b>MongoDB</b>Stores chat history &amp; sessions</div>
-    </div>
-  </div>
-</div>
-
-<script>
-  // This is a client-side simulation of a GraphRAG pipeline for demo purposes.
-  // In production: Neo4j stores the graph, LlamaIndex retrieves relevant nodes/edges
-  // for a question, and OpenAI generates the final natural-language answer from that
-  // retrieved context (this is what "Retrieval-Augmented Generation" means).
-
-  const graph = {
-    company: "TechNova",
-    teams: [
-      { name: "AI", lead: "Vinu", members: ["Vinu", "Chhota Bheem", "Kalia"], projects: ["Recommendation Engine", "Chat Assistant"] },
-      { name: "Web", lead: "Rahul", members: ["Rahul", "Meera", "Suresh"], projects: ["Customer Portal", "Admin Dashboard"] },
-    ]
-  };
-
-  function findAnswer(question){
-    const q = question.toLowerCase();
-
-    if(q.includes('lead') && q.includes('ai')){
-      const team = graph.teams.find(t => t.name === 'AI');
-      return { text: `${team.lead} leads the AI team.`, source: `Graph path: Company → Team(AI) → LEADS_TO → Person(${team.lead})` };
-    }
-    if(q.includes('lead') && q.includes('web')){
-      const team = graph.teams.find(t => t.name === 'Web');
-      return { text: `${team.lead} leads the Web team.`, source: `Graph path: Company → Team(Web) → LEADS_TO → Person(${team.lead})` };
-    }
-    if(q.includes('web') && q.includes('project')){
-      const team = graph.teams.find(t => t.name === 'Web');
-      return { text: `The Web team works on: ${team.projects.join(', ')}.`, source: `Graph path: Team(Web) → WORKS_ON → Project(...)` };
-    }
-    if(q.includes('ai') && q.includes('project')){
-      const team = graph.teams.find(t => t.name === 'AI');
-      return { text: `The AI team works on: ${team.projects.join(', ')}.`, source: `Graph path: Team(AI) → WORKS_ON → Project(...)` };
-    }
-    if(q.includes('asha')){
-      const team = graph.teams.find(t => t.members.includes('Vinu'));
-      const colleagues = team.members.filter(m => m !== 'Vinu');
-      return { text: `Vinu works with ${colleagues.join(' and ')} on the ${team.name} team.`, source: `Graph path: Person(Vinu) → MEMBER_OF → Team(AI) → HAS_MEMBER → Person(...)` };
-    }
-    if(q.includes('rahul')){
-      const team = graph.teams.find(t => t.members.includes('Rahul'));
-      const colleagues = team.members.filter(m => m !== 'Rahul');
-      return { text: `Rahul works with ${colleagues.join(' and ')} on the ${team.name} team.`, source: `Graph path: Person(Rahul) → MEMBER_OF → Team(Web) → HAS_MEMBER → Person(...)` };
-    }
-    return { text: `I couldn't find that in the knowledge graph. Try asking about team leads, projects, or team members.`, source: `No matching graph path found.` };
-  }
-
-  function ask(text){
-    document.getElementById('chatInput').value = text;
-    sendMessage();
-  }
-
-  function sendMessage(){
-    const input = document.getElementById('chatInput');
-    const text = input.value.trim();
-    if(!text) return;
-
-    const messages = document.getElementById('messages');
-
-    const userMsg = document.createElement('div');
-    userMsg.className = 'msg user';
-    userMsg.textContent = text;
-    messages.appendChild(userMsg);
-
-    input.value = '';
-    messages.scrollTop = messages.scrollHeight;
-
-    setTimeout(() => {
-      const answer = findAnswer(text);
-      const botMsg = document.createElement('div');
-      botMsg.className = 'msg bot';
-      botMsg.innerHTML = `${answer.text}<span class="source">${answer.source}</span>`;
-      messages.appendChild(botMsg);
-      messages.scrollTop = messages.scrollHeight;
-    }, 500);
-  }
-
-  document.getElementById('chatInput').addEventListener('keydown', e => {
-    if(e.key === 'Enter') sendMessage();
-  });
-</script>
 </body>
 </html>
