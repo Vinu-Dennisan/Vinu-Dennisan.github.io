@@ -221,7 +221,7 @@
 
 <header>
   <div class="logo">🧠 Knowledge Graph Assistant</div>
-  <a href="online-bookstore.html">← Back to Book Store</a>
+  <a href="index.html">← Back to Portfolio</a>
 </header>
 
 <div class="hero">
@@ -258,7 +258,7 @@
         <text x="240" y="115" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">Team: Web</text>
 
         <circle cx="80" cy="180" r="22" fill="#A79EF5"/>
-        <text x="80" y="185" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">Asha (Lead)</text>
+        <text x="80" y="185" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">Vinu (Lead)</text>
 
         <circle cx="240" cy="180" r="22" fill="#A79EF5"/>
         <text x="240" y="185" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">Rahul (Lead)</text>
@@ -281,7 +281,7 @@
     <div class="sample-qs">
       <button onclick="ask('Who leads the AI team?')">Who leads the AI team?</button>
       <button onclick="ask('What projects does the Web team work on?')">Web team projects?</button>
-      <button onclick="ask('Who does Asha work with?')">Who does Asha work with?</button>
+      <button onclick="ask('Who does Vinu work with?')">Who does Vinu work with?</button>
     </div>
   </div>
 </div>
@@ -310,7 +310,7 @@
   const graph = {
     company: "TechNova",
     teams: [
-      { name: "AI", lead: "Asha", members: ["Asha", "Divya", "Kiran"], projects: ["Recommendation Engine", "Chat Assistant"] },
+      { name: "AI", lead: "Vinu", members: ["Vinu", "Chhota Bheem", "Kalia"], projects: ["Recommendation Engine", "Chat Assistant"] },
       { name: "Web", lead: "Rahul", members: ["Rahul", "Meera", "Suresh"], projects: ["Customer Portal", "Admin Dashboard"] },
     ]
   };
@@ -335,9 +335,9 @@
       return { text: `The AI team works on: ${team.projects.join(', ')}.`, source: `Graph path: Team(AI) → WORKS_ON → Project(...)` };
     }
     if(q.includes('asha')){
-      const team = graph.teams.find(t => t.members.includes('Asha'));
-      const colleagues = team.members.filter(m => m !== 'Asha');
-      return { text: `Asha works with ${colleagues.join(' and ')} on the ${team.name} team.`, source: `Graph path: Person(Asha) → MEMBER_OF → Team(AI) → HAS_MEMBER → Person(...)` };
+      const team = graph.teams.find(t => t.members.includes('Vinu'));
+      const colleagues = team.members.filter(m => m !== 'Vinu');
+      return { text: `Vinu works with ${colleagues.join(' and ')} on the ${team.name} team.`, source: `Graph path: Person(Vinu) → MEMBER_OF → Team(AI) → HAS_MEMBER → Person(...)` };
     }
     if(q.includes('rahul')){
       const team = graph.teams.find(t => t.members.includes('Rahul'));
