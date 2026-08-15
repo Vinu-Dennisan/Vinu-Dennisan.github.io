@@ -377,6 +377,15 @@
 </style>
 </head>
 <body>
+<div style="background:#1A1D29;color:#fff;font-size:12px;padding:8px 16px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-family:'Segoe UI',sans-serif;">
+  <span style="opacity:.55;">My Projects:</span>
+  <a href="index.html" style="color:#fff;text-decoration:none;">🏠 Portfolio</a>
+  <a href="https://student-management-system--vinudennisan.replit.app/" target="_blank" style="color:#fff;text-decoration:none;">🎓 Student Management</a>
+  <a href="online-bookstore.html" style="color:#fff;text-decoration:none;">📚 Book Store</a>
+  <a href="taskflow-project.html" style="color:#fff;text-decoration:none;">✅ TaskFlow</a>
+  <a href="nmap-simulator.html" style="color:#fff;text-decoration:none;">🔒 Nmap Simulator</a>
+  <a href="knowledge-graph-assistant.html" style="color:#fff;text-decoration:none;">🧠 Knowledge Graph</a>
+</div>
 
 <header>
   <div class="logo">📚 Book Store</div>
@@ -389,6 +398,8 @@
 <div class="tabs">
   <button class="tab-btn active" id="tabGeneral" onclick="switchTab('general')">All Books</button>
   <button class="tab-btn" id="tabEngineering" onclick="switchTab('engineering')">Engineering Books &amp; Papers</button>
+  <button class="tab-btn" id="tabOrders" onclick="switchTab('orders')">My Orders</button>
+  <button class="tab-btn" id="tabSell" onclick="switchTab('sell')">Add a Book</button>
 </div>
 
 <!-- GENERAL BOOKS PANEL -->
@@ -403,6 +414,30 @@
   </div>
   <div class="status" id="status">Showing popular books to start</div>
   <div class="grid" id="bookGrid"></div>
+</div>
+
+<!-- MY ORDERS PANEL -->
+<div class="panel" id="panelOrders">
+  <div class="hero">
+    <h1>My Orders</h1>
+    <p>Past checkouts from your cart are saved here.</p>
+  </div>
+  <div id="ordersList" style="max-width:700px; margin:0 auto; padding:0 24px 60px;"></div>
+</div>
+
+<!-- ADD A BOOK PANEL -->
+<div class="panel" id="panelSell">
+  <div class="hero">
+    <h1>Add Your Own Book</h1>
+    <p>List a book of your own to the catalog — it'll show up in "All Books" alongside the internet search results.</p>
+  </div>
+  <div style="max-width:500px; margin:0 auto; padding:0 24px 60px; display:flex; flex-direction:column; gap:10px;">
+    <input id="myBookTitle" type="text" placeholder="Book title" style="padding:10px 14px; border-radius:8px; border:1px solid var(--line);">
+    <input id="myBookAuthor" type="text" placeholder="Author" style="padding:10px 14px; border-radius:8px; border:1px solid var(--line);">
+    <input id="myBookPrice" type="number" placeholder="Price (₹)" style="padding:10px 14px; border-radius:8px; border:1px solid var(--line);">
+    <button onclick="addMyBook()" style="padding:12px; border-radius:8px; border:none; background:var(--accent); color:#fff; font-weight:700; cursor:pointer;">Add to Catalog</button>
+  </div>
+  <div id="myBooksList" style="max-width:500px; margin:0 auto; padding:0 24px 60px; display:flex; flex-direction:column; gap:8px;"></div>
 </div>
 
 <!-- ENGINEERING BOOKS PANEL -->
@@ -468,6 +503,7 @@
     <span>Total</span>
     <span id="cartTotal">₹0</span>
   </div>
+  <button onclick="checkout()" style="margin-top:14px; padding:12px; border-radius:8px; border:none; background:var(--accent); color:#fff; font-weight:700; cursor:pointer;">Checkout</button>
 </div>
 
 <script>
@@ -475,8 +511,14 @@
   function switchTab(tab){
     document.getElementById('panelGeneral').classList.toggle('active', tab === 'general');
     document.getElementById('panelEngineering').classList.toggle('active', tab === 'engineering');
+    document.getElementById('panelOrders').classList.toggle('active', tab === 'orders');
+    document.getElementById('panelSell').classList.toggle('active', tab === 'sell');
     document.getElementById('tabGeneral').classList.toggle('active', tab === 'general');
     document.getElementById('tabEngineering').classList.toggle('active', tab === 'engineering');
+    document.getElementById('tabOrders').classList.toggle('active', tab === 'orders');
+    document.getElementById('tabSell').classList.toggle('active', tab === 'sell');
+    if(tab === 'orders') renderOrders();
+    if(tab === 'sell') renderMyBooks();
   }
 
   // ---------- GENERAL BOOK SEARCH ----------
@@ -751,6 +793,86 @@
   deptSelect.addEventListener('change', renderEngineering);
   regulationSelect.addEventListener('change', renderEngineering);
   semesterSelect.addEventListener('change', renderEngineering);
+
+  // ---------- CHECKOUT / ORDERS ----------
+  function checkout(){
+    if(cart.length === 0){ alert('Your cart is empty.'); return; }
+    const orders = JSON.parse(localStorage.getItem('bookstore_orders') || '[]');
+    const total = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
+    orders.unshift({
+      id: `ORD-${Date.now().toString().slice(-6)}`,
+      date: new Date().toLocaleString(),
+      items: cart,
+      total
+    });
+    localStorage.setItem('bookstore_orders', JSON.stringify(orders));
+
+    cart = [];
+    saveCart();
+    renderCart();
+    toggleCart(false);
+    alert('Order placed! Check "My Orders" to see it.');
+  }
+
+  function renderOrders(){
+    const orders = JSON.parse(localStorage.getItem('bookstore_orders') || '[]');
+    const list = document.getElementById('ordersList');
+    if(!orders.length){
+      list.innerHTML = `<p style="text-align:center; color:var(--muted); font-size:13px;">No orders yet — add books to your cart and checkout.</p>`;
+      return;
+    }
+    list.innerHTML = orders.map(o => `
+      <div style="background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:16px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:8px;">
+          <span>${o.id}</span><span>${o.date}</span>
+        </div>
+        ${o.items.map(i => `<div style="font-size:13px; margin-bottom:4px;">${i.title} × ${i.qty} — ₹${i.price * i.qty}</div>`).join('')}
+        <div style="font-weight:700; margin-top:8px; border-top:1px solid var(--line); padding-top:8px;">Total: ₹${o.total}</div>
+      </div>
+    `).join('');
+  }
+
+  // ---------- ADD YOUR OWN BOOK ----------
+  function loadMyBooks(){
+    return JSON.parse(localStorage.getItem('bookstore_my_books') || '[]');
+  }
+
+  function addMyBook(){
+    const title = document.getElementById('myBookTitle').value.trim();
+    const author = document.getElementById('myBookAuthor').value.trim();
+    const price = parseInt(document.getElementById('myBookPrice').value) || 199;
+    if(!title){ alert('Please enter a title.'); return; }
+
+    const myBooks = loadMyBooks();
+    myBooks.unshift({ key: `mybook-${Date.now()}`, title, author: author || 'Unknown', price });
+    localStorage.setItem('bookstore_my_books', JSON.stringify(myBooks));
+
+    document.getElementById('myBookTitle').value = '';
+    document.getElementById('myBookAuthor').value = '';
+    document.getElementById('myBookPrice').value = '';
+    renderMyBooks();
+  }
+
+  function deleteMyBook(key){
+    const myBooks = loadMyBooks().filter(b => b.key !== key);
+    localStorage.setItem('bookstore_my_books', JSON.stringify(myBooks));
+    renderMyBooks();
+  }
+
+  function renderMyBooks(){
+    const myBooks = loadMyBooks();
+    const list = document.getElementById('myBooksList');
+    if(!myBooks.length){
+      list.innerHTML = `<p style="text-align:center; color:var(--muted); font-size:13px;">You haven't added any books yet.</p>`;
+      return;
+    }
+    list.innerHTML = myBooks.map(b => `
+      <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:10px 14px; font-size:13px;">
+        <span>${b.title} — ${b.author} (₹${b.price})</span>
+        <button onclick="deleteMyBook('${b.key}')" style="background:none; border:none; color:#C0392B; cursor:pointer;">Delete</button>
+      </div>
+    `).join('');
+  }
 
   // ---------- INITIAL LOAD ----------
   fetchBooks('bestseller fiction');
