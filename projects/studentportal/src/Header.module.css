@@ -1,0 +1,13 @@
+.header {
+  background-color: #bf9fed;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  font-size: 24px;
+}
+
+
+.navLinks {
+  display: flex;
+  gap: 1rem;
+}
