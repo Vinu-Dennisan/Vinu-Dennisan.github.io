@@ -1,0 +1,632 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6a1b9a">
+  <meta name="description" content="Student Portal for managing students and registration.">
+  <title>Student Portal | Vinu</title>
+
+  <style>
+    :root {
+      --purple: #6a1b9a;
+      --purple-dark: #43116b;
+      --lavender: #bf9fed;
+      --background: #f7f4fc;
+      --white: #ffffff;
+      --text: #292235;
+      --muted: #71697d;
+      --border: #e7dff0;
+      --danger: #c62828;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(120deg, var(--purple-dark), var(--purple), var(--lavender));
+      color: white;
+      padding: 24px 18px 16px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 20px;
+      font-size: clamp(25px, 4vw, 36px);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    nav button {
+      background: transparent;
+      color: white;
+      border: 1px solid #ffffff80;
+      border-radius: 24px;
+      padding: 10px 18px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    nav button:hover,
+    nav button.active {
+      background: white;
+      color: var(--purple);
+    }
+
+    main {
+      width: min(100% - 32px, 900px);
+      margin: 30px auto;
+      flex: 1;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+      animation: appear 0.2s ease;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: clamp(24px, 5vw, 48px);
+      text-align: center;
+      box-shadow: 0 8px 30px #32104b0b;
+    }
+
+    .hero h2 {
+      color: var(--purple);
+      font-size: clamp(27px, 4vw, 38px);
+      margin-top: 0;
+    }
+
+    .hero p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .hero-icon {
+      font-size: 56px;
+      margin-bottom: 8px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .stat {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--purple);
+      font-size: 30px;
+      margin-bottom: 7px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: clamp(18px, 4vw, 28px);
+      margin-bottom: 20px;
+      box-shadow: 0 5px 20px #32104b08;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: var(--purple);
+    }
+
+    .section-heading {
+      margin-bottom: 22px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    input, select {
+      width: 100%;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #d9cce6;
+      border-radius: 8px;
+      background: white;
+      color: var(--text);
+      font: inherit;
+    }
+
+    input:focus, select:focus {
+      outline: 2px solid #bf9fed;
+      border-color: var(--purple);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: normal;
+    }
+
+    .checkbox-row input {
+      width: auto;
+    }
+
+    .btn {
+      background: var(--purple);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: var(--purple-dark);
+    }
+
+    .btn-secondary {
+      background: #f0e5fa;
+      color: var(--purple);
+    }
+
+    .btn-secondary:hover {
+      background: #e4d0f7;
+    }
+
+    .btn-danger {
+      background: #fff0f0;
+      color: var(--danger);
+      padding: 8px 12px;
+    }
+
+    .btn-danger:hover {
+      background: #ffdddd;
+    }
+
+    .student-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .student-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 10px;
+      background: #fdfbff;
+    }
+
+    .student-info {
+      overflow-wrap: anywhere;
+    }
+
+    .student-info strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .student-info small {
+      color: var(--muted);
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 10px;
+    }
+
+    .notice {
+      padding: 12px;
+      border-radius: 8px;
+      background: #f1e9fa;
+      color: var(--purple-dark);
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
+    .error {
+      color: var(--danger);
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .about-details {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 10px;
+      background: #f7f1fc;
+      line-height: 1.8;
+    }
+
+    footer {
+      background: #eee7f5;
+      color: var(--muted);
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 520px) {
+      .form-row {
+        flex-direction: column;
+      }
+
+      nav {
+        gap: 7px;
+      }
+
+      nav button {
+        padding: 9px 13px;
+      }
+
+      .student-item {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🎓 Student Portal</h1>
+    <nav aria-label="Main navigation">
+      <button type="button" class="active" data-page="home">Home</button>
+      <button type="button" data-page="students">Students</button>
+      <button type="button" data-page="register">Register</button>
+      <button type="button" data-page="about">About</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="page active">
+      <div class="hero">
+        <div class="hero-icon">📚</div>
+        <h2>Welcome to the Student Portal!</h2>
+        <p>
+          Your simple space to manage student details, explore the portal,
+          and try the registration form.
+        </p>
+        <button class="btn" type="button" data-go="students">View Students</button>
+        <button class="btn btn-secondary" type="button" data-go="register">Register Student</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <strong id="studentCount">3</strong>
+          Students
+        </div>
+        <div class="stat">
+          <strong>4</strong>
+          Portal Sections
+        </div>
+        <div class="stat">
+          <strong>24/7</strong>
+          Explore Anytime
+        </div>
+      </div>
+    </section>
+
+    <section id="students" class="page">
+      <div class="section-heading">
+        <h2>Student Management</h2>
+        <p>Add students to your list and remove entries when needed.</p>
+      </div>
+
+      <div class="card">
+        <h2>Add a Student</h2>
+        <form id="studentForm">
+          <div class="form-row">
+            <input id="studentName" type="text" placeholder="Enter student name"
+              aria-label="Student name" maxlength="80" required>
+            <button class="btn" type="submit">+ Add Student</button>
+          </div>
+          <p id="studentError" class="error" role="alert"></p>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Student List</h2>
+        <p id="listSummary" class="section-heading"></p>
+        <ul id="studentList" class="student-list"></ul>
+      </div>
+    </section>
+
+    <section id="register" class="page">
+      <div class="section-heading">
+        <h2>Student Registration</h2>
+        <p>Fill in the details below to try the registration form.</p>
+      </div>
+
+      <div class="card">
+        <form id="registrationForm">
+          <div class="field">
+            <label for="fullName">Full Name</label>
+            <input id="fullName" name="name" type="text" maxlength="100"
+              autocomplete="name" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Email Address</label>
+            <input id="email" name="email" type="email"
+              autocomplete="email" required>
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password"
+              minlength="8" autocomplete="new-password" required>
+          </div>
+
+          <div class="field">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+              <option value="">-- Select --</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Other">Other</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="checkbox-row">
+              <input id="terms" name="terms" type="checkbox" required>
+              I agree to the terms
+            </label>
+          </div>
+
+          <button class="btn" type="submit">Submit Registration</button>
+          <p id="registrationMessage" class="notice" role="status" hidden></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="about" class="page">
+      <div class="card">
+        <h2>About This App</h2>
+        <p>
+          This Student Portal demonstrates page navigation, form validation,
+          dynamic lists, and interactive JavaScript.
+        </p>
+        <p>Time spent on this page: <strong id="timeSpent">0</strong> seconds.</p>
+        <button id="developerToggle" class="btn" type="button"
+          aria-expanded="false">Show Developer Info</button>
+
+        <div id="developerInfo" class="about-details" hidden>
+          <h3>Developer Information</h3>
+          <p><strong>Name:</strong> Sharmi</p>
+          <p><strong>Role:</strong> Full Stack Developer</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Student Portal. All rights reserved.</p>
+  </footer>
+
+  <script>
+    (() => {
+      const $ = (selector) => document.querySelector(selector);
+      const $$ = (selector) => document.querySelectorAll(selector);
+
+      let students = [
+        { id: 1, name: "Alice" },
+        { id: 2, name: "Bob" },
+        { id: 3, name: "Charlie" }
+      ];
+
+      let nextId = 4;
+      let aboutSeconds = 0;
+      let aboutTimer = null;
+
+      $("#year").textContent = new Date().getFullYear();
+
+      function showPage(pageId) {
+        if (!document.getElementById(pageId)) return;
+
+        $$(".page").forEach(page => {
+          page.classList.toggle("active", page.id === pageId);
+        });
+
+        $$("nav button[data-page]").forEach(button => {
+          const selected = button.dataset.page === pageId;
+          button.classList.toggle("active", selected);
+          button.setAttribute("aria-current", selected ? "page" : "false");
+        });
+
+        if (aboutTimer) {
+          clearInterval(aboutTimer);
+          aboutTimer = null;
+        }
+
+        if (pageId === "about") {
+          aboutTimer = setInterval(() => {
+            aboutSeconds++;
+            $("#timeSpent").textContent = aboutSeconds;
+          }, 1000);
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      $$("nav button[data-page]").forEach(button => {
+        button.addEventListener("click", () => showPage(button.dataset.page));
+      });
+
+      $$("[data-go]").forEach(button => {
+        button.addEventListener("click", () => showPage(button.dataset.go));
+      });
+
+      function renderStudents() {
+        const list = $("#studentList");
+        list.replaceChildren();
+
+        $("#studentCount").textContent = students.length;
+        $("#listSummary").textContent =
+          `${students.length} student${students.length === 1 ? "" : "s"} in your list`;
+
+        if (students.length === 0) {
+          const empty = document.createElement("li");
+          empty.className = "empty";
+          empty.textContent = "No students available. Add a student to get started.";
+          list.appendChild(empty);
+          return;
+        }
+
+        students.forEach(student => {
+          const item = document.createElement("li");
+          item.className = "student-item";
+
+          const info = document.createElement("div");
+          info.className = "student-info";
+
+          const name = document.createElement("strong");
+          name.textContent = student.name;
+
+          const id = document.createElement("small");
+          id.textContent = `Student ID: ${student.id}`;
+
+          const remove = document.createElement("button");
+          remove.className = "btn btn-danger";
+          remove.type = "button";
+          remove.textContent = "Remove";
+          remove.setAttribute("aria-label", `Remove ${student.name}`);
+          remove.addEventListener("click", () => {
+            students = students.filter(s => s.id !== student.id);
+            renderStudents();
+          });
+
+          info.append(name, id);
+          item.append(info, remove);
+          list.appendChild(item);
+        });
+      }
+
+      $("#studentForm").addEventListener("submit", event => {
+        event.preventDefault();
+
+        const input = $("#studentName");
+        const name = input.value.trim();
+        const error = $("#studentError");
+        error.textContent = "";
+
+        if (!name) {
+          error.textContent = "Please enter a student name.";
+          input.focus();
+          return;
+        }
+
+        if (students.some(s => s.name.toLowerCase() === name.toLowerCase())) {
+          error.textContent = "That student is already in the list.";
+          input.focus();
+          return;
+        }
+
+        students.push({ id: nextId++, name });
+        input.value = "";
+        renderStudents();
+        input.focus();
+      });
+
+      $("#developerToggle").addEventListener("click", () => {
+        const details = $("#developerInfo");
+        const willShow = details.hidden;
+        details.hidden = !willShow;
+        $("#developerToggle").textContent =
+          willShow ? "Hide Developer Info" : "Show Developer Info";
+        $("#developerToggle").setAttribute("aria-expanded", String(willShow));
+      });
+
+      $("#registrationForm").addEventListener("submit", event => {
+        event.preventDefault();
+
+        const form = event.currentTarget;
+        if (!form.reportValidity()) return;
+
+        const data = new FormData(form);
+        const message = $("#registrationMessage");
+
+        // This is a demonstration only: no account or password is saved.
+        message.textContent =
+          `Thank you, ${String(data.get("name")).trim()}! ` +
+          "Your demo form passed validation. This example does not send or save registrations.";
+        message.hidden = false;
+
+        form.reset();
+      });
+
+      renderStudents();
+      showPage("home");
+
+      window.addEventListener("pagehide", () => {
+        if (aboutTimer) clearInterval(aboutTimer);
+      });
+    })();
+  </script>
+</body>
+</html>
